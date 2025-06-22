@@ -27,7 +27,7 @@ def env_vars():
 def install(env_vars, request) -> None:
     """
     Фикстура запуска инсталлера и установки приложения.
-    
+
     Отключается при запуске с флагом --no-install
     """
 
@@ -40,7 +40,7 @@ def install(env_vars, request) -> None:
     installer_exe = env_vars['installer_path']
     if not Path(installer_exe).exists():
         pytest.fail(f"Installer not found: {installer_exe}")
-        
+
     process = subprocess.Popen([installer_exe])
     time.sleep(2)  # Задержка для запуска GUI инсталлера
     pyautogui.press('enter')
@@ -61,18 +61,18 @@ def startup(env_vars):
     Запускает приложение, передает управление тесту,
     а затем останавливает приложение после завершения теста.
     """
-    
+
     vkteams_exe = env_vars['vkteams_path']
     if not Path(vkteams_exe).exists():
         pytest.fail(f"VKTeams executable not found: {vkteams_exe}")
-    
+
     process = subprocess.Popen([vkteams_exe])
     time.sleep(5)
-    
+
     yield process
-    
+
     process.terminate()
-    
+
     try:
         process.wait(timeout=10)
         print("Application stopped successfully")

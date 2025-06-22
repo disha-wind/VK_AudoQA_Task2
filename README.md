@@ -9,7 +9,7 @@
 pip install -r requirements.dev.txt
 ```
 
-Скачайте установщик `VK Teams` в директорию [tests\windows\installer](tests\windows\installer)
+Скачайте установщик `VK Teams` в директорию [tests/windows/installer](tests/windows/installer)
 ```shell
 New-Item -ItemType Directory -Force -Path "tests\windows\installer"
 Invoke-WebRequest -Uri "https://vkteams-www.hb.bizmrg.com/win/x64/vkteamssetup.exe" -OutFile "tests\windows\installer\vkteamssetup.exe"
