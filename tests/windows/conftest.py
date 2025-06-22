@@ -23,8 +23,17 @@ def env_vars():
 
 
 @pytest.fixture(scope='session', autouse=True)
-def install(env_vars) -> None:
-    """Фикстура запуска инсталлера и установки приложения"""
+def install(env_vars, request) -> None:
+    """
+    Фикстура запуска инсталлера и установки приложения.
+    Отключается при запуске с флагом --no-install
+    """
+
+    # Отключение установки
+    if request.config.getoption("--no-install"):
+        print("Installation skipped due to --no-install flag")
+        return
+
     print("Install process started")
 
     installer_exe = env_vars['installer_path']
@@ -32,5 +41,6 @@ def install(env_vars) -> None:
     time.sleep(2)
     pyautogui.press('enter')
     process.wait()
+    time.sleep(2)
 
     print("Install process exited")
