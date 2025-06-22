@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+from pathlib import Path
 
 import pyautogui
 import pytest
@@ -37,6 +38,9 @@ def install(env_vars, request) -> None:
     print("Install process started")
 
     installer_exe = env_vars['installer_path']
+    if not Path(installer_exe).exists():
+        pytest.fail(f"Installer not found: {installer_exe}")
+        
     process = subprocess.Popen([installer_exe])
     time.sleep(2)  # Задержка для запуска GUI инсталлера
     pyautogui.press('enter')
@@ -49,7 +53,7 @@ def install(env_vars, request) -> None:
     print("Install process exited")
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def startup(env_vars):
     """
     Фикстура для запуска и остановки приложения.
@@ -59,6 +63,9 @@ def startup(env_vars):
     """
     
     vkteams_exe = env_vars['vkteams_path']
+    if not Path(vkteams_exe).exists():
+        pytest.fail(f"VKTeams executable not found: {vkteams_exe}")
+    
     process = subprocess.Popen([vkteams_exe])
     time.sleep(5)
     
@@ -68,7 +75,7 @@ def startup(env_vars):
     
     try:
         process.wait(timeout=10)
-        print("Приложение успешно остановлено")
+        print("Application stopped successfully")
     except subprocess.TimeoutExpired:
-        print("Не удалось корректно завершить процесс, принудительное завершение")
+        print("Failed to terminate process gracefully, forcing kill")
         process.kill()

@@ -30,7 +30,7 @@ def test_check_url_protocol() -> None:
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path):
             pass
     except FileNotFoundError:
-        pytest.fail("URL схема не найдена в реестре")
+        pytest.fail("URL protocol not found in registry")
 
 
 def test_check_uninstall_entry() -> None:

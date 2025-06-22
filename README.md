@@ -1,4 +1,4 @@
-# Автоматизация тестирования установки и запуска приложения
+# Автоматизация тестирования установки и запуска приложения `VK Teams`
 
 Тестирование производится под платформу `Windows`. Соответственно все команды приведены для тестируемой платформы.
 
@@ -9,18 +9,13 @@
 pip install -r requirements.dev.txt
 ```
 
-Скачайте установщик `VK Teams`
+Скачайте установщик `VK Teams` в директорию [tests\windows\installer](tests\windows\installer)
 ```shell
-New-Item -ItemType Directory -Force -Path "tests\installer"
-Invoke-WebRequest -Uri "https://vkteams-www.hb.bizmrg.com/win/x64/vkteamssetup.exe" -OutFile "tests\installer\vkteamssetup.exe"
+New-Item -ItemType Directory -Force -Path "tests\windows\installer"
+Invoke-WebRequest -Uri "https://vkteams-www.hb.bizmrg.com/win/x64/vkteamssetup.exe" -OutFile "tests\windows\installer\vkteamssetup.exe"
 ```
 
 ## Запуск тестов
-
-Перейдите в рабочую директорию
-```shell
-cd tests
-```
 
 Запуск всех тестов
 ```shell
@@ -36,15 +31,24 @@ pytest --no-install
 Другие конфигурации запуска:
 - Тест установки приложения
     ```shell
-    pytest windows/test_install.py
+    pytest tests/windows/test_install.py
     ```
     ```shell
-    pytest windows/test_install.py --no-install
+    pytest tests/windows/test_install.py --no-install
     ```
 - Test запуска приложения
     ```shell
-    pytest windows/test_startup.py
+    pytest tests/windows/test_startup.py
     ```
     ```shell
-    pytest windows/test_startup.py --no-install
+    pytest tests/windows/test_startup.py --no-install
     ```
+
+## Генерация отчета
+
+Отчеты генерируются с текущей датой и временем в папку [reports](tests/reports).  
+Используется библиотека [pytest-html](https://pypi.org/project/pytest-html/).
+
+```shell
+python tests/report.py
+```
