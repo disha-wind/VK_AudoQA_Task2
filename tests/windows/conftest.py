@@ -7,7 +7,7 @@ import pytest
 from dotenv import load_dotenv
 
 
-def pytest_configure(config):
+def pytest_configure():
     load_dotenv()
 
 
@@ -38,9 +38,12 @@ def install(env_vars, request) -> None:
 
     installer_exe = env_vars['installer_path']
     process = subprocess.Popen([installer_exe])
-    time.sleep(2)
+    time.sleep(2)  # Задержка для запуска GUI инсталлера
     pyautogui.press('enter')
     process.wait()
+
+    # Задержка для создания рабочих директорий приложения
+    # Без этого не проходит тест windows.test_install.test_config_files_exist
     time.sleep(2)
 
     print("Install process exited")
