@@ -26,10 +26,10 @@ def env_vars():
 def install(env_vars, request) -> None:
     """
     Фикстура запуска инсталлера и установки приложения.
+    
     Отключается при запуске с флагом --no-install
     """
 
-    # Отключение установки
     if request.config.getoption("--no-install"):
         print("Installation skipped due to --no-install flag")
         return
@@ -47,3 +47,28 @@ def install(env_vars, request) -> None:
     time.sleep(2)
 
     print("Install process exited")
+
+
+@pytest.fixture
+def startup(env_vars):
+    """
+    Фикстура для запуска и остановки приложения.
+
+    Запускает приложение, передает управление тесту,
+    а затем останавливает приложение после завершения теста.
+    """
+    
+    vkteams_exe = env_vars['vkteams_path']
+    process = subprocess.Popen([vkteams_exe])
+    time.sleep(5)
+    
+    yield process
+    
+    process.terminate()
+    
+    try:
+        process.wait(timeout=10)
+        print("Приложение успешно остановлено")
+    except subprocess.TimeoutExpired:
+        print("Не удалось корректно завершить процесс, принудительное завершение")
+        process.kill()

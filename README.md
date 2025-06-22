@@ -32,3 +32,19 @@ pytest
 ```shell
 pytest --no-install
 ```
+
+Другие конфигурации запуска:
+- Тест установки приложения
+    ```shell
+    pytest windows/test_install.py
+    ```
+    ```shell
+    pytest windows/test_install.py --no-install
+    ```
+- Test запуска приложения
+    ```shell
+    pytest windows/test_startup.py
+    ```
+    ```shell
+    pytest windows/test_startup.py --no-install
+    ```
